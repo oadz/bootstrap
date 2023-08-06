@@ -4,8 +4,10 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 
 interface ConfirmData {
   MessageConFirmtext: ModalType;
-  data?: Dataincoming;
+  data?: any;
   onClick: (value: any) => void | undefined;
+  text: string;
+  disabled?: boolean;
 }
 interface ModalType {
   title: string;
@@ -26,7 +28,13 @@ interface Dataincoming {
   password: string;
   avatar: string;
 }
-const ModalConfirm = ({ data, MessageConFirmtext, onClick }: ConfirmData) => {
+const ModalConfirm = ({
+  text,
+  data,
+  MessageConFirmtext,
+  disabled,
+  onClick,
+}: ConfirmData) => {
   const handleClick = (data: any) => {
     Swal.fire({
       title: `${MessageConFirmtext.title || ""}!`,
@@ -47,6 +55,7 @@ const ModalConfirm = ({ data, MessageConFirmtext, onClick }: ConfirmData) => {
       confirmButtonText: MessageConFirmtext.confirmButtonText,
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log("data", data);
         onClick(data);
         Swal.fire({
           title: `${MessageConFirmtext.afterConfirmTitle || ""}!`,
@@ -69,8 +78,12 @@ const ModalConfirm = ({ data, MessageConFirmtext, onClick }: ConfirmData) => {
   };
   return (
     <div>
-      <Button variant="success" onClick={() => handleClick(data)}>
-        Register (confirm)
+      <Button
+        variant="success"
+        onClick={() => handleClick(data)}
+        disabled={disabled}
+      >
+        {text}
       </Button>
     </div>
   );

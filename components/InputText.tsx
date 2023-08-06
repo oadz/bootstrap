@@ -6,13 +6,13 @@ type Props = {
   id: string;
   placeHolder?: string;
   value: any;
-  defaultValue: any;
+  // defaultValue: any;
   max?: any;
   readonly?: boolean;
   isTextarea?: boolean;
   rows?: number;
   disabled?: boolean;
-  onChange: (value: any) => void | undefined;
+  onChange: (id: string, value: any) => void | undefined;
   required: boolean;
   isValid?: boolean;
   isInvalid?: boolean;
@@ -29,7 +29,7 @@ const InputText = ({
   isTextarea,
   readonly,
   value,
-  defaultValue,
+  // defaultValue,
   rows,
   disabled,
   isValid,
@@ -44,7 +44,8 @@ const InputText = ({
 }: Props) => {
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
-    onChange(inputValue);
+    onChange(id, inputValue);
+    // onChange(inputValue);
   };
   return isTextarea ? (
     <div className="form-group">
@@ -57,7 +58,7 @@ const InputText = ({
           readOnly={readonly}
           placeholder={placeHolder}
           value={value}
-          defaultValue={defaultValue}
+          // defaultValue={defaultValue}
           onChange={handleChange}
           rows={rows}
           disabled={disabled}
@@ -82,7 +83,7 @@ const InputText = ({
           disabled={disabled}
           required={required}
           value={value}
-          defaultValue={defaultValue}
+          // defaultValue={defaultValue}
           onChange={handleChange}
           max={max}
           style={style}
