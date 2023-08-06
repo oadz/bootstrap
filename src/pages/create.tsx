@@ -1,18 +1,14 @@
 import React from "react";
-import Head from "next/head";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import SelectBox from "../../components/SelectBox";
 import InputText from "../../components/InputText";
-import { Button, Form } from "react-bootstrap";
 import { SetStateAction, useEffect, useState } from "react";
-import AlertText from "../../components/AlertText";
 import ModalConfirm from "../../components/ModalConfirm";
 import { useSelector, useDispatch } from "react-redux";
 import { registerProfile } from "../store/profileSlice";
 import { RootState } from "@/store/store";
 import Link from "next/link";
-const inter = Inter({ subsets: ["latin"] });
+import router from "next/router";
 interface Profile {
   id: number;
   name?: string;
@@ -27,9 +23,6 @@ type Props = {};
 const Create = (props: Props) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const dispatch = useDispatch();
-
-  // const [validName, setValidName] = useState<boolean>(false);
-  // const [validphone, setValidphone] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<any>({
     nameNotEmpty: "",
     phoneStart: "",
@@ -50,36 +43,15 @@ const Create = (props: Props) => {
     address: "",
     role: "",
   });
-  const MessageAlerttext: MessageAlertPopup = {
-    title: "THIS IS PROPS TITLE",
-    detail: "DETAILS MSG PROPS",
-    type: "info", //ถ้าไม่ใส่จะมี log ถามหาแต่จะไม่เป็น stoper
-    position: "top-end",
-  };
+
   const MessageConFirmtext: MessagePopup = {
-    title: "THIS IS CONFIRM success",
-    detail: "DETAILS success",
-    type: "success",
+    title: "THIS IS CONFIRM REGISTER",
+    // detail: "DETAILS success",
+    type: "info",
     afterConfirmType: "success",
     afterConfirmTitle: "Finished !!",
-    afterConfirmDetail: "Detail prop after confirm",
+    afterConfirmDetail: "Data is OK",
     confirmButtonText: "Sure, Create/Edit  pewpew!",
-  };
-  const MessageWarningtext: MessagePopup = {
-    title: "THIS IS CONFIRM warning",
-    detail: "DETAILS warning",
-    type: "error",
-    afterConfirmType: "success",
-  };
-  const dataCreate = {
-    name: "Nicolas",
-    email: "nico@gmail.com",
-    password: "123456",
-    avatar: "https://api.lorem.space/image/face?w=640&h=480",
-  };
-  const ErrorMssage = {
-    name: "Please fill name",
-    email: " eieie",
   };
   const optionSelect = [
     { id: 1, name: "admin" },
@@ -87,7 +59,6 @@ const Create = (props: Props) => {
   ];
 
   const handleChangeData = (id: string, value: any) => {
-    console.log("value", value);
     switch (id) {
       case "tel":
         const onlyDigits = value.replace(/\D/g, "");
@@ -141,10 +112,8 @@ const Create = (props: Props) => {
     }
   };
   const handleDataFromAlert = (dataFromAlert: any) => {
-    console.log("dataFromAlert", dataFromAlert);
-
     dispatch(registerProfile(dataFromAlert));
-    // setData(dataFromAlert);
+    router.push(`/`);
   };
   useEffect(() => {
     const hasEmptyField = Object.values(regisProfile).some(
@@ -180,7 +149,7 @@ const Create = (props: Props) => {
                     isTextarea={false} //ตัวแปลงในการใช้งาน
                     type="text"
                     required={true}
-                    ErrorMssage={ErrorMssage.name || ""}
+                    ErrorMssage={errorMessage.name || ""}
                     placeHolder="Enter name"
                     value={regisProfile.name}
                     isInvalid={errorMessage.nameNotEmpty.length}
@@ -263,25 +232,20 @@ const Create = (props: Props) => {
             </div>
 
             <div className="mt-5 d-flex justify-content-center">
-              <Button
+              {/* <Button
                 variant="warning"
                 onClick={() => AlertText(MessageAlerttext)}
               >
                 Show Alert
-              </Button>
+              </Button> */}
               <ModalConfirm
                 data={regisProfile}
                 text={"confirm"}
-                // disabled={isButtonDisabled}
+                button={true}
+                disabled={isButtonDisabled}
                 onClick={handleDataFromAlert}
                 MessageConFirmtext={MessageConFirmtext}
               ></ModalConfirm>
-              {/* <ModalConfirm
-            variant="warning"
-            onClick={() => AlertText(MessageAlerttext)}
-          >
-            view
-          </ModalConfirm> */}
             </div>
           </div>
         </div>

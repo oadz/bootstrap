@@ -7,6 +7,7 @@ interface ConfirmData {
   data?: any;
   onClick: (value: any) => void | undefined;
   text: string;
+  button?: boolean;
   disabled?: boolean;
 }
 interface ModalType {
@@ -31,6 +32,7 @@ interface Dataincoming {
 const ModalConfirm = ({
   text,
   data,
+  button,
   MessageConFirmtext,
   disabled,
   onClick,
@@ -78,13 +80,18 @@ const ModalConfirm = ({
   };
   return (
     <div>
-      <Button
-        variant="success"
-        onClick={() => handleClick(data)}
-        disabled={disabled}
-      >
-        {text}
-      </Button>
+      {button ? (
+        <Button
+          variant={MessageConFirmtext.type}
+          onClick={() => handleClick(data)}
+          disabled={disabled}
+        >
+          {text}
+          <i className="bi bi-wifi-1"></i>
+        </Button>
+      ) : (
+        <div onClick={() => handleClick(data)}>delete </div>
+      )}
     </div>
   );
 };

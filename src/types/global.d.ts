@@ -27,5 +27,6 @@ declare global {
     type: "success" | "error" | "warning" | "info" | "question";
     onClick?: (value: string) => void | undefined;
     position: "top-end" | "center" | "bottom-right";
+    timer?: number;
   }
 }

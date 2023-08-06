@@ -1,13 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// const initialState = {
-//   name: "",
-//   email: "",
-//   birthday: "",
-//   tel: "",
-//   role: "",
-//   adddress: "",
-// };
 interface Profile {
   id: number;
   name?: string;
@@ -18,17 +10,6 @@ interface Profile {
   role?: string;
 }
 
-// const initialState: Profile[] = [
-//   {
-//     id: 0,
-//     name: "",
-//     email: "",
-//     birthday: "",
-//     tel: "",
-//     address: "",
-//     role: "",
-//   },
-// ];
 const initialState: Profile[] = [];
 const profileSlice = createSlice({
   name: "profile",
@@ -48,8 +29,24 @@ const profileSlice = createSlice({
         },
       ];
     },
+    updateProfile(state, action) {
+      const { id, name, email, birthday, role, tel } = action.payload;
+      const profileToUpdate = state.find((profile) => profile.id === id);
+      if (profileToUpdate) {
+        profileToUpdate.name = name;
+        profileToUpdate.email = email;
+        profileToUpdate.birthday = birthday;
+        profileToUpdate.role = role;
+        profileToUpdate.tel = tel;
+      }
+    },
+    removeItem(state, action) {
+      const itemId = action.payload;
+      return (state = state.filter((item) => item.id !== itemId));
+    },
   },
 });
 
-export const { registerProfile } = profileSlice.actions;
+export const { registerProfile, updateProfile, removeItem } =
+  profileSlice.actions;
 export default profileSlice.reducer;
