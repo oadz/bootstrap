@@ -54,7 +54,8 @@ const EditProfile = () => {
     timer: 2000,
   };
   const MessageConFirmtext: MessagePopup = {
-    title: "THIS IS CONFIRM REGISTER",
+    title: "THIS IS CONFIRM EDIT",
+    buttonVariant: "warning",
     type: "info",
     afterConfirmType: "success",
     afterConfirmTitle: "Finished !!",
@@ -65,7 +66,9 @@ const EditProfile = () => {
     { id: 1, name: "admin" },
     { id: 2, name: "user" },
   ];
-
+  const updatedOptionSelect = optionSelect.filter(
+    (item) => item.name === regisProfile.role
+  );
   const handleChangeData = (id: string, value: any) => {
     switch (id) {
       case "tel":
@@ -216,6 +219,7 @@ const EditProfile = () => {
                 placeHolder={"role"}
                 onChange={handleChangeData}
                 labelKey={"name"}
+                defaultValue={updatedOptionSelect}
                 disabled={false}
               ></SelectBox>
             </div>
@@ -243,7 +247,7 @@ const EditProfile = () => {
           </Button>
           <ModalConfirm
             data={regisProfile}
-            text={"confirm"}
+            text={"Edit"}
             button={true}
             disabled={isButtonDisabled}
             onClick={handleSubmit}

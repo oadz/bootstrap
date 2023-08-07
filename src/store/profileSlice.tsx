@@ -42,7 +42,7 @@ const profileSlice = createSlice({
     },
     removeItem(state, action) {
       const itemId = action.payload;
-      return (state = state.filter((item) => item.id !== itemId));
+      return state.filter((item) => !itemId.includes(item.id));
     },
   },
 });

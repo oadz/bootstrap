@@ -14,6 +14,14 @@ declare global {
     title: string;
     detail?: string;
     type: "success" | "error" | "warning" | "info" | "question";
+    buttonVariant?:
+      | "primary"
+      | "warning"
+      | "success"
+      | "info"
+      | "danger"
+      | "light"
+      | "dark";
     afterConfirmTitle?: string;
     afterConfirmDetail?: string;
     afterConfirmType?: "success" | "error" | "warning" | "info" | "question";

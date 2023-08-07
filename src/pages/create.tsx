@@ -48,6 +48,7 @@ const Create = (props: Props) => {
   const MessageConFirmtext: MessagePopup = {
     title: "THIS IS CONFIRM REGISTER",
     // detail: "DETAILS success",
+    buttonVariant: "success",
     type: "info",
     afterConfirmType: "success",
     afterConfirmTitle: "Finished !!",

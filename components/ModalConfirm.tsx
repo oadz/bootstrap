@@ -14,6 +14,14 @@ interface ModalType {
   title: string;
   detail?: string;
   type?: "success" | "error" | "warning" | "info" | "question";
+  buttonVariant?:
+    | "primary"
+    | "warning"
+    | "success"
+    | "info"
+    | "danger"
+    | "light"
+    | "dark";
   showCancelButton?: boolean;
   showConfirmButton?: boolean;
   customizeButtonColor?: "#d33333" | "#77c831";
@@ -81,12 +89,11 @@ const ModalConfirm = ({
     <div>
       {button ? (
         <Button
-          variant={MessageConFirmtext.type}
+          variant={MessageConFirmtext.buttonVariant}
           onClick={() => handleClick(data)}
           disabled={disabled}
         >
           {text}
-          <i className="bi bi-wifi-1"></i>
         </Button>
       ) : (
         <div onClick={() => handleClick(data)}>delete </div>

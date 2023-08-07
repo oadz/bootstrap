@@ -2,7 +2,7 @@ import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 
 import { Button, NavDropdown, Table } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ModalConfirm from "../../components/ModalConfirm";
 import Link from "next/link";
@@ -16,11 +16,13 @@ export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [deleteId, setDeleteId] = useState<number | null>(null);
-
+  const [multipleId, setMultipleId] = useState<any>([]);
+  const [selectAll, setSelectAll] = useState(false);
   const MessageWarningtext: MessagePopup = {
     title: "THIS IS CONFIRM warning",
     detail: "Are you sure to delete ?",
     type: "error",
+    buttonVariant: "danger",
     afterConfirmType: "success",
     afterConfirmTitle: "Finished !!",
     afterConfirmDetail: "Data is deleted",
@@ -35,6 +37,39 @@ export default function Home() {
   const handleRemoveProfile = (id: number) => {
     setDeleteId(id);
   };
+  const handleSelectSingle = (event: any, id: number) => {
+    if (event.target.checked) {
+      setMultipleId([...multipleId, id]);
+    } else {
+      setMultipleId(
+        multipleId.filter((selectedId: number) => selectedId !== id)
+      );
+    }
+  };
+  const handleSelectAllChange = (event: any) => {
+    setSelectAll(event.target.checked);
+    if (event.target.checked) {
+      setMultipleId(profileList.map((item: any) => item.id));
+    } else {
+      setMultipleId([]);
+    }
+  };
+  const handleDelete = () => {
+    dispatch(removeItem(multipleId));
+    setMultipleId([]);
+  };
+  useEffect(() => {
+    const profileListIds = profileList.map((item) => item.id);
+    let areAllSelected = true;
+    for (const id of profileListIds) {
+      if (!multipleId.includes(id)) {
+        areAllSelected = false;
+        break;
+      }
+    }
+    setSelectAll(areAllSelected);
+  }, [multipleId, profileList]);
+
   return (
     <>
       <Head>
@@ -68,6 +103,15 @@ export default function Home() {
                 <th scope="col">role </th>
                 <th scope="col">tel </th>
                 <th scope="col">action </th>
+                <th scope="col">
+                  {" "}
+                  <input
+                    type="checkbox"
+                    name="selectAll"
+                    onChange={handleSelectAllChange}
+                    checked={selectAll}
+                  />{" "}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -103,18 +147,38 @@ export default function Home() {
                           data={deleteId}
                           text={"danger"}
                           onClick={() => {
-                            dispatch(removeItem(profile.id));
+                            dispatch(removeItem([profile.id]));
                           }}
                           MessageConFirmtext={MessageWarningtext}
                         />
                       </NavDropdown.Item>
                     </NavDropdown>
                   </td>
+                  <td>
+                    {" "}
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="selectedId"
+                        value={profile.id}
+                        onChange={(e) => handleSelectSingle(e, profile.id)}
+                        checked={multipleId.includes(profile.id)}
+                      />
+                    </td>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </Table>
         </div>
+        <ModalConfirm
+          data={deleteId}
+          button={true}
+          text={"Delete Selected Items"}
+          onClick={handleDelete}
+          MessageConFirmtext={MessageWarningtext}
+          disabled={multipleId.length === 0}
+        />
       </div>
     </>
   );
