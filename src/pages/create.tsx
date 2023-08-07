@@ -9,6 +9,7 @@ import { registerProfile } from "../store/profileSlice";
 import { RootState } from "@/store/store";
 import Link from "next/link";
 import router from "next/router";
+import { Button } from "react-bootstrap";
 interface Profile {
   id: number;
   name?: string;
@@ -133,13 +134,12 @@ const Create = (props: Props) => {
       setRegisProfile((prevProfile) => ({ ...prevProfile, id: 1 }));
     }
   }, [dataList]);
-  console.log("dataList", dataList);
   return (
     <>
       <div>
         <div className={styles.description}>
           <h3 className="text-center">Register </h3>
-          <Link href="/">home</Link>
+
           <div>
             <div style={{ height: "auto" }}>
               <div className="row">
@@ -238,6 +238,12 @@ const Create = (props: Props) => {
               >
                 Show Alert
               </Button> */}
+              <Button className="goback-button">
+                <Link href="/" className="goback-link">
+                  go to dashboard
+                </Link>
+              </Button>
+
               <ModalConfirm
                 data={regisProfile}
                 text={"confirm"}

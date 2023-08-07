@@ -57,7 +57,6 @@ const ModalConfirm = ({
       confirmButtonText: MessageConFirmtext.confirmButtonText,
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("data", data);
         onClick(data);
         Swal.fire({
           title: `${MessageConFirmtext.afterConfirmTitle || ""}!`,

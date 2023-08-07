@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 
-import { NavDropdown, Table } from "react-bootstrap";
+import { Button, NavDropdown, Table } from "react-bootstrap";
 import { useState } from "react";
 
 import ModalConfirm from "../../components/ModalConfirm";
@@ -49,7 +49,11 @@ export default function Home() {
           <div className="d-flex justify-content-between mb-3">
             {" "}
             <h3 className="text-center">Dashboard</h3>
-            <Link href="/create">Register</Link>
+            <Button className="regis-button">
+              <Link href="/create" className="regis-link">
+                Register
+              </Link>
+            </Button>
           </div>
 
           {/* <Link href="/create">Register</Link>

@@ -104,7 +104,33 @@ a {
   color: inherit;
   text-decoration: none;
 }
+.goback-button{
+  margin-right: auto;
+  border: none !important;
+  background: gainsboro !important;
+}
+.goback-link{
+  text-decoration: none;
+    color: black;
+}
+.goback-button:hover{
+  color: var(--bs-btn-hover-color);
+  background-color: var(--bs-gray-600) !important;
+  border-color: var(--bs-btn-hover-border-color);
+}
+.regis-button{
+  margin-left: auto;
+  border: none !important;
+  background: #83d554 !important;
+}
+.regis-link{
+  text-decoration: none;
+    color: black;
+}
+.regis-button:hover{
 
+  background: #377b10 !important;
+}
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

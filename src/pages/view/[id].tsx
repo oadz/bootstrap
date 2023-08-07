@@ -2,6 +2,8 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import Link from "next/link";
+import { Button } from "react-bootstrap";
 type Props = {};
 
 const view = (props: Props) => {
@@ -10,7 +12,6 @@ const view = (props: Props) => {
   const profileList = useSelector((state: RootState) => state.profile);
 
   const profile = profileList.find((profile) => profile.id === Number(id));
-  console.log("pro", profile);
   if (!profile) {
     return <div>Profile not found</div>;
   }
@@ -24,6 +25,11 @@ const view = (props: Props) => {
       <p>Tel: {profile.tel}</p>
       <p>Address: {profile.address}</p>
       <p>Role: {profile.role}</p>
+      <Button className="goback-button">
+        <Link href="/" className="goback-link">
+          go to dashboard
+        </Link>
+      </Button>
     </div>
   );
 };

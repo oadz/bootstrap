@@ -30,7 +30,6 @@ const SelectBox = ({
     setSelected(selection);
     onChange(id, selection);
   };
-  console.log("selection", selected);
   return (
     <div className="form-group">
       <Form.Label>{id}</Form.Label>

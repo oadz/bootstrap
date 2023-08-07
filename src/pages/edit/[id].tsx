@@ -7,6 +7,8 @@ import ModalConfirm from "../../../components/ModalConfirm";
 import InputText from "../../../components/InputText";
 import SelectBox from "../../../components/SelectBox";
 import AlertText from "../../../components/AlertText";
+import { Button } from "react-bootstrap";
+import Link from "next/link";
 interface Profile {
   name?: string;
   email?: string;
@@ -45,8 +47,8 @@ const EditProfile = () => {
     role: profile?.role || "",
   });
   const MessageAlerttext: MessageAlertPopup = {
-    title: "THIS IS EDIT PAGE",
-    detail: "DETAILS MSG PROPS",
+    title: "EDIT PAGE",
+    detail: "You can edit this page",
     type: "info", //ถ้าไม่ใส่จะมี log ถามหาแต่จะไม่เป็น stoper
     position: "top-end",
     timer: 2000,
@@ -234,6 +236,11 @@ const EditProfile = () => {
         </div>
 
         <div className="mt-5 d-flex justify-content-center">
+          <Button className="goback-button">
+            <Link href="/" className="goback-link">
+              go to dashboard
+            </Link>
+          </Button>
           <ModalConfirm
             data={regisProfile}
             text={"confirm"}
