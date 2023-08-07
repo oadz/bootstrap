@@ -46,7 +46,7 @@
     /* --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
-
+--bs-btn-bg: #0d6efd;
     --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
     --secondary-glow: linear-gradient(
       to bottom right,
@@ -104,7 +104,33 @@ a {
   color: inherit;
   text-decoration: none;
 }
+.goback-button{
+  margin-right: auto;
+  border: none !important;
+  background: gainsboro !important;
+}
+.goback-link{
+  text-decoration: none;
+    color: black;
+}
+.goback-button:hover{
+  color: var(--bs-btn-hover-color);
+  background-color: var(--bs-gray-600) !important;
+  border-color: var(--bs-btn-hover-border-color);
+}
+.regis-button{
+  margin-left: auto;
+  border: none !important;
+  background: #83d554 !important;
+}
+.regis-link{
+  text-decoration: none;
+    color: black;
+}
+.regis-button:hover{
 
+  background: #377b10 !important;
+}
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

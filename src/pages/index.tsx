@@ -1,133 +1,74 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import SelectBox from "../../components/SelectBox";
-import InputText from "../../components/InputText";
-import { Button, Form } from "react-bootstrap";
-import { SetStateAction, useEffect, useState } from "react";
-import AlertText from "../../components/AlertText";
+
+import { Button, NavDropdown, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+
 import ModalConfirm from "../../components/ModalConfirm";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { useRouter } from "next/router";
+import { removeItem } from "@/store/profileSlice";
 
-const inter = Inter({ subsets: ["latin"] });
-interface Profile {
-  name?: string;
-  email?: string;
-  birthday?: string;
-  tel?: string;
-  role?: string;
-}
 export default function Home() {
-  const [switchInput, setSwitchInput] = useState<boolean>(true);
-  const [openModalConfirm, setOpenModalConfirm] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState("");
-  // const [typeInput, setTypeInput] = useState<InputType>("input");
-  const [data, setData] = useState("");
-  const [name, setName] = useState<any>("");
-  const [email, setEmail] = useState<any>(null);
-  const [birthDay, setBirthDay] = useState("");
-  const [phone, setPhone] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-
-  const [validName, setValidName] = useState<boolean>(false);
-  const [validphone, setValidphone] = useState<boolean>(false);
-
-  const today = new Date().toISOString().substr(0, 10); // วันปัจจุบันในรูปแบบ YYYY-MM-DD
-
-  const [regisProfile, setRegisProfile] = useState<Profile>({
-    name: "",
-    email: "",
-    birthday: "",
-    tel: "",
-    role: "user",
-  });
-  const MessageAlerttext: MessageAlertPopup = {
-    title: "THIS IS PROPS TITLE",
-    detail: "DETAILS MSG PROPS",
-    type: "info", //ถ้าไม่ใส่จะมี log ถามหาแต่จะไม่เป็น stoper
-    position: "top-end",
-  };
-  const MessageConFirmtext: MessagePopup = {
-    title: "THIS IS CONFIRM success",
-    detail: "DETAILS success",
-    type: "success",
-    afterConfirmType: "success",
-    afterConfirmTitle: "Finished !!",
-    afterConfirmDetail: "Detail prop after confirm",
-    confirmButtonText: "Sure, Create/Edit  pewpew!",
-  };
+  const profileList = useSelector((state: RootState) => state.profile);
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [multipleId, setMultipleId] = useState<any>([]);
+  const [selectAll, setSelectAll] = useState(false);
   const MessageWarningtext: MessagePopup = {
     title: "THIS IS CONFIRM warning",
-    detail: "DETAILS warning",
+    detail: "Are you sure to delete ?",
     type: "error",
+    buttonVariant: "danger",
     afterConfirmType: "success",
+    afterConfirmTitle: "Finished !!",
+    afterConfirmDetail: "Data is deleted",
+    confirmButtonText: "Sure, Delete it!",
   };
-  const dataCreate = {
-    name: "Nicolas",
-    email: "nico@gmail.com",
-    password: "123456",
-    avatar: "https://api.lorem.space/image/face?w=640&h=480",
+  const handleViewProfile = (id: number) => {
+    router.push(`/view/${id}`);
   };
-  const ErrorMssage = {
-    name: "Please fill name",
-    email: " eieie",
+  const handleEditProfile = (id: number) => {
+    router.push(`/edit/${id}`);
   };
-  const optionSelect = [
-    { id: 1, name: "admin" },
-    { id: 2, name: "user" },
-  ];
-  const handleDataFromAlert = (dataFromAlert: any) => {
-    setData(dataFromAlert);
+  const handleRemoveProfile = (id: number) => {
+    setDeleteId(id);
   };
-  const handleTextareaChange = (id: string, value: any) => {
-    setData(value);
-    // setRegisProfile({
-    //   name: value,
-    //   email: "",
-    //   birthday: "",
-    //   tel: "",
-    //   role: "user",
-    // });
-  };
-  const setItemName = (value: any) => {
-    setName(value);
-  };
-  const setItemEmail = (value: any) => {
-    if (!value.includes("@")) {
-      setEmail(value);
-      setEmailError("Invalid email address.");
+  const handleSelectSingle = (event: any, id: number) => {
+    if (event.target.checked) {
+      setMultipleId([...multipleId, id]);
     } else {
-      setEmail(value);
-      setEmailError("");
+      setMultipleId(
+        multipleId.filter((selectedId: number) => selectedId !== id)
+      );
     }
   };
-  const setItemPhone = (value: any) => {
-    const onlyDigits = value.replace(/\D/g, "");
-    setPhone(onlyDigits);
-  };
-
-  const handleBirthDayChange = (value: any) => {
-    const inputDate = value;
-    if (inputDate > today) {
-      setBirthDay(today);
+  const handleSelectAllChange = (event: any) => {
+    setSelectAll(event.target.checked);
+    if (event.target.checked) {
+      setMultipleId(profileList.map((item: any) => item.id));
     } else {
-      setBirthDay(inputDate);
+      setMultipleId([]);
     }
   };
-  const handleSelected = () => {};
-  const handelCheckValid = () => {
-    setValidName(!name.length);
-    const isValidPhoneNumber = /^0\d{9}$/.test(phone);
-    if (isValidPhoneNumber) {
-      setValidphone(true);
-    } else {
-      setValidphone(false);
-      setPhoneError("Please fill start with 0");
-    }
+  const handleDelete = () => {
+    dispatch(removeItem(multipleId));
+    setMultipleId([]);
   };
   useEffect(() => {
-    handelCheckValid();
-  }, [name, email, birthDay, phone]);
+    const profileListIds = profileList.map((item) => item.id);
+    let areAllSelected = true;
+    for (const id of profileListIds) {
+      if (!multipleId.includes(id)) {
+        areAllSelected = false;
+        break;
+      }
+    }
+    setSelectAll(areAllSelected);
+  }, [multipleId, profileList]);
 
   return (
     <>
@@ -140,107 +81,104 @@ export default function Home() {
 
       <div>
         <div className={styles.description}>
-          <h3 className="text-center">Register </h3>
-
-          <div>
-            {/* <div className={styles.center} style={{ margin: 10 }}>
-              <Button onClick={() => setSwitchInput(!switchInput)}>
-                {switchInput ? "TextInput" : "Textarea"}
-              </Button>
-            </div> */}
-            <div style={{ height: "auto" }}>
-              <div className="row">
-                <div className="col-6">
-                  <InputText
-                    id="name"
-                    isTextarea={false} //ตัวแปลงในการใช้งาน
-                    type="text"
-                    required={true}
-                    ErrorMssage={validName ? ErrorMssage.name : ""}
-                    placeHolder="Enter name"
-                    value={name}
-                    defaultValue={"jim"}
-                    isInvalid={validName}
-                    isValid={!validName}
-                    maxLength={20}
-                    onChange={setItemName}
-                    style={{ resize: "none" }}
-                  ></InputText>
-                </div>
-                <div className="col-6">
-                  <InputText
-                    id="email"
-                    isTextarea={false} //ตัวแปลงในการใช้งาน
-                    type="email"
-                    required={true}
-                    ErrorMssage={emailError !== "" ? emailError : ""}
-                    defaultValue={"example@"}
-                    disabled={false}
-                    isInvalid={!!emailError}
-                    placeHolder="Enter text"
-                    value={email}
-                    onChange={setItemEmail}
-                  ></InputText>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-6">
-                  <InputText
-                    id="BirthDay"
-                    required={false}
-                    isTextarea={false}
-                    type="date"
-                    defaultValue={"date defaultValue"}
-                    placeHolder="Enter date"
-                    max={today}
-                    value={birthDay}
-                    onChange={handleBirthDayChange}
-                    style={{ resize: "none" }}
-                  ></InputText>
-                </div>
-                <div className="col-6">
-                  <InputText
-                    id="Tel"
-                    isTextarea={false} //ตัวแปลงในการใช้งาน
-                    type="tel"
-                    required={false}
-                    placeHolder="Enter phone number (e.g., 0XXXXXXXXX)"
-                    value={phone}
-                    ErrorMssage={!validphone ? phoneError : ""}
-                    isValid={validphone}
-                    isInvalid={!validphone}
-                    defaultValue={"099555555"}
-                    onChange={setItemPhone}
-                    style={{ resize: "none" }}
-                    maxLength={10}
-                  ></InputText>
-                </div>
-                <div className="col-6">
-                  <SelectBox
-                    id="role"
-                    optionSelect={optionSelect}
-                    placeHolder={"role"}
-                    onChange={handleSelected}
-                    labelKey={"name"}
-                    defaultValue={[optionSelect[1]]}
-                    disabled={false}
-                  ></SelectBox>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-5 d-flex justify-content-center">
-              {/* <Button variant="warning" onClick={() => AlertText(MessageAlerttext)}>
-            Show Alert
-          </Button> */}
-              <ModalConfirm
-                // data={dataCreate}
-                onClick={handleDataFromAlert}
-                MessageConFirmtext={MessageConFirmtext}
-              ></ModalConfirm>
-            </div>
+          <div className="d-flex justify-content-between mb-3">
+            {" "}
+            <h3 className="text-center">Dashboard</h3>
+            <Button className="regis-button">
+              <Link href="/create" className="regis-link">
+                Register
+              </Link>
+            </Button>
           </div>
+
+          {/* <Link href="/create">Register</Link>
+          <Link href="/view">View</Link>
+          <Link href="/edit">edit</Link> */}
+          <Table striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">birthday </th>
+                <th scope="col">role </th>
+                <th scope="col">tel </th>
+                <th scope="col">action </th>
+                <th scope="col">
+                  {" "}
+                  <input
+                    type="checkbox"
+                    name="selectAll"
+                    onChange={handleSelectAllChange}
+                    checked={selectAll}
+                  />{" "}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {profileList.map((profile) => (
+                <tr key={profile.id}>
+                  <td>{profile.name || "null"}</td>
+                  <td>{profile.email || "null"}</td>
+                  <td>{profile.birthday || "null"}</td>
+                  <td>{profile.role || "null"}</td>
+                  <td>{profile.tel || "null"}</td>
+                  <td style={{ display: "flex" }}>
+                    {" "}
+                    <NavDropdown title="action" id="nav-dropdown">
+                      <NavDropdown.Item
+                        eventKey="4.1"
+                        onClick={() => handleViewProfile(profile.id)}
+                      >
+                        view
+                      </NavDropdown.Item>
+                      <NavDropdown.Item
+                        eventKey="4.2"
+                        onClick={() => handleEditProfile(profile.id)}
+                      >
+                        edit
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item
+                        eventKey="4.4"
+                        className="text-danger my-auto"
+                        onClick={() => handleRemoveProfile(profile.id)}
+                      >
+                        <ModalConfirm
+                          data={deleteId}
+                          text={"danger"}
+                          onClick={() => {
+                            dispatch(removeItem([profile.id]));
+                          }}
+                          MessageConFirmtext={MessageWarningtext}
+                        />
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </td>
+                  <td>
+                    {" "}
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="selectedId"
+                        value={profile.id}
+                        onChange={(e) => handleSelectSingle(e, profile.id)}
+                        checked={multipleId.includes(profile.id)}
+                      />
+                    </td>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </div>
+        <ModalConfirm
+          data={deleteId}
+          button={true}
+          text={"Delete Selected Items"}
+          onClick={handleDelete}
+          MessageConFirmtext={MessageWarningtext}
+          disabled={multipleId.length === 0}
+        />
       </div>
     </>
   );

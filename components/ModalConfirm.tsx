@@ -4,13 +4,24 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 
 interface ConfirmData {
   MessageConFirmtext: ModalType;
-  data?: Dataincoming;
+  data?: any;
   onClick: (value: any) => void | undefined;
+  text: string;
+  button?: boolean;
+  disabled?: boolean;
 }
 interface ModalType {
   title: string;
   detail?: string;
   type?: "success" | "error" | "warning" | "info" | "question";
+  buttonVariant?:
+    | "primary"
+    | "warning"
+    | "success"
+    | "info"
+    | "danger"
+    | "light"
+    | "dark";
   showCancelButton?: boolean;
   showConfirmButton?: boolean;
   customizeButtonColor?: "#d33333" | "#77c831";
@@ -26,7 +37,14 @@ interface Dataincoming {
   password: string;
   avatar: string;
 }
-const ModalConfirm = ({ data, MessageConFirmtext, onClick }: ConfirmData) => {
+const ModalConfirm = ({
+  text,
+  data,
+  button,
+  MessageConFirmtext,
+  disabled,
+  onClick,
+}: ConfirmData) => {
   const handleClick = (data: any) => {
     Swal.fire({
       title: `${MessageConFirmtext.title || ""}!`,
@@ -69,9 +87,17 @@ const ModalConfirm = ({ data, MessageConFirmtext, onClick }: ConfirmData) => {
   };
   return (
     <div>
-      <Button variant="success" onClick={() => handleClick(data)}>
-        Register (confirm)
-      </Button>
+      {button ? (
+        <Button
+          variant={MessageConFirmtext.buttonVariant}
+          onClick={() => handleClick(data)}
+          disabled={disabled}
+        >
+          {text}
+        </Button>
+      ) : (
+        <div onClick={() => handleClick(data)}>delete </div>
+      )}
     </div>
   );
 };

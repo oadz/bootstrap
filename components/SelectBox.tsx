@@ -7,7 +7,7 @@ type Props = {
   id: string;
   optionSelect: DataOptions[];
   placeHolder: string;
-  onChange: (value: any) => void;
+  onChange: (id: string, value: any) => void | undefined;
   labelKey: string;
   defaultValue?: any;
   disabled?: boolean;
@@ -28,7 +28,7 @@ const SelectBox = ({
   const [selected, setSelected] = useState(defaultValue);
   const handleSelection = (selection: any) => {
     setSelected(selection);
-    onChange(selection);
+    onChange(id, selection);
   };
   return (
     <div className="form-group">
