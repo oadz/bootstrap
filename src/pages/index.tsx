@@ -89,11 +89,12 @@ export default function Home() {
                 Register
               </Link>
             </Button>
+            <Button>
+              <Link href="/product" className="regis-link">
+                Product
+              </Link>
+            </Button>
           </div>
-
-          {/* <Link href="/create">Register</Link>
-          <Link href="/view">View</Link>
-          <Link href="/edit">edit</Link> */}
           <Table striped bordered hover variant="dark">
             <thead>
               <tr>
