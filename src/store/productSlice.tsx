@@ -23,12 +23,12 @@ interface dataDetail {
 interface Products {
   data: dataDetail[];
   status: string;
-  error: string;
+  error: boolean;
 }
 const initialState: Products = {
   data: [],
   status: "idle",
-  error: "this data is failed",
+  error: false,
 };
 const postsSlice = createSlice({
   name: "posts",
@@ -47,7 +47,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = "failed";
-        state.error = state.error;
+        state.error = true;
       });
   },
 });

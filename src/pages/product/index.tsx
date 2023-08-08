@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchProducts, productSelector, reset } from "@/store/productSlice";
 import { GetServerSideProps } from "next";
+import { Button } from "react-bootstrap";
 
 const ProductList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { data, status, error } = useSelector(productSelector);
-  console.log("data", data);
   // useEffect(() => {
   //   dispatch(fetchProducts());
   // }, []);
@@ -29,9 +29,11 @@ const ProductList = () => {
     <div>
       <h1>ProductList with createAsyncThunk</h1>
       <ul>
-        <button onClick={handleFetchProduct}>fetchProducts</button>;
-        <button onClick={handleResetProduct}>resetProducts</button>;
-        {status === "failed" && <p>Error: {error}</p>}
+        <Button onClick={handleFetchProduct}>Fetch</Button>
+        <Button variant="dark" onClick={handleResetProduct}>
+          Reset
+        </Button>
+        {status === "failed" && <p>Error this now</p>}
         {status === "succeeded" && (
           <div>
             {data.map((product) => (
