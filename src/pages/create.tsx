@@ -23,7 +23,7 @@ type Props = {};
 
 const Create = (props: Props) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); //useDispatch ไว้ action data
   const [errorMessage, setErrorMessage] = useState<any>({
     nameNotEmpty: "",
     phoneStart: "",
@@ -33,7 +33,7 @@ const Create = (props: Props) => {
     role: "",
   });
   const today = new Date().toISOString().substr(0, 10); // วันปัจจุบันในรูปแบบ YYYY-MM-DD
-  const dataList = useSelector((state: RootState) => state.profile);
+  const dataList = useSelector((state: RootState) => state.profile); //useSelector ไว้ read data
 
   const [regisProfile, setRegisProfile] = useState<Profile>({
     id: 0,
@@ -118,6 +118,7 @@ const Create = (props: Props) => {
     router.push(`/`);
   };
   useEffect(() => {
+    console.log("regisProfile", regisProfile)
     const hasEmptyField = Object.values(regisProfile).some(
       (value) => value === ""
     );

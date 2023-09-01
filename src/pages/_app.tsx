@@ -5,16 +5,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 
 import { store } from "../store/store";
-import { Provider } from "react-redux";
+import { Provider } from "react-redux"; //มาครอบเพื่อส่งข้อมูลจาก store เข้า component
 import "sweetalert2/src/sweetalert2.scss";
 import { useEffect } from "react";
+import Layout from "../../components/layouts/Layout";
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </Provider>
   );
 }

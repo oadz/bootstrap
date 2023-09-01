@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useRouter } from "next/router";
-import { removeItem } from "@/store/profileSlice";
+import { registerProfile, removeItem } from "@/store/profileSlice";
 
 export default function Home() {
   const profileList = useSelector((state: RootState) => state.profile);
@@ -68,8 +68,19 @@ export default function Home() {
       }
     }
     setSelectAll(areAllSelected);
-  }, [multipleId, profileList]);
 
+  }, [multipleId, profileList]);
+  // useEffect(() => {
+  //   let profileName: (any) = profileList.map((item) => item.name);
+  //   console.log("registerProfile", profileName)
+  //   if (profileName = [""]) {
+  //     console.log("registerProfile")
+
+  //     dispatch(registerProfile([]));
+  //   }
+
+  // }, []);
+  console.log("profileList", profileList)
   return (
     <>
       <Head>
@@ -79,7 +90,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
+      <div >
         <div className={styles.description}>
           <div className="d-flex justify-content-between mb-3">
             {" "}
@@ -118,11 +129,11 @@ export default function Home() {
             <tbody>
               {profileList.map((profile) => (
                 <tr key={profile.id}>
-                  <td>{profile.name || "null"}</td>
-                  <td>{profile.email || "null"}</td>
-                  <td>{profile.birthday || "null"}</td>
-                  <td>{profile.role || "null"}</td>
-                  <td>{profile.tel || "null"}</td>
+                  <td>{profile.name}</td>
+                  <td>{profile.email}</td>
+                  <td>{profile.birthday}</td>
+                  <td>{profile.role}</td>
+                  <td>{profile.tel}</td>
                   <td style={{ display: "flex" }}>
                     {" "}
                     <NavDropdown title="action" id="nav-dropdown">
@@ -157,15 +168,13 @@ export default function Home() {
                   </td>
                   <td>
                     {" "}
-                    <td>
-                      <input
-                        type="checkbox"
-                        name="selectedId"
-                        value={profile.id}
-                        onChange={(e) => handleSelectSingle(e, profile.id)}
-                        checked={multipleId.includes(profile.id)}
-                      />
-                    </td>
+                    <input
+                      type="checkbox"
+                      name="selectedId"
+                      value={profile.id}
+                      onChange={(e) => handleSelectSingle(e, profile.id)}
+                      checked={multipleId.includes(profile.id)}
+                    />
                   </td>
                 </tr>
               ))}

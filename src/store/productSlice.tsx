@@ -8,6 +8,24 @@ export const fetchProducts = createAsyncThunk(
     return response.data;
   }
 );
+export const searchProducts = createAsyncThunk(
+  "products/searchProducts",
+  async (searchTerm) => {
+    const response = await axios.get(
+      `https://fakestoreapi.com/products/${searchTerm}`
+    );
+    return response.data;
+  }
+);
+export const getAllCatagoryProducts = createAsyncThunk(
+  "products/getAllCatagoryProducts",
+  async () => {
+    const response = await axios.get(
+      "https://fakestoreapi.com/products/categories"
+    );
+    return response.data;
+  }
+);
 interface dataDetail {
   id: number;
   title: string;
@@ -24,11 +42,13 @@ interface Products {
   data: dataDetail[];
   status: string;
   error: boolean;
+  catagory: string[];
 }
 const initialState: Products = {
   data: [],
   status: "idle",
   error: false,
+  catagory: [],
 };
 const postsSlice = createSlice({
   name: "posts",
@@ -46,6 +66,28 @@ const postsSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = true;
+      })
+      // .addCase(getAllCatagoryProducts.pending, (state) => {
+      //   state.status = "loading";
+      // })
+      .addCase(getAllCatagoryProducts.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.catagory = action.payload;
+      })
+      .addCase(getAllCatagoryProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = true;
+      })
+      .addCase(searchProducts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = action.payload;
+      })
+      .addCase(searchProducts.rejected, (state, action) => {
         state.status = "failed";
         state.error = true;
       });

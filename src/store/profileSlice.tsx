@@ -1,20 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"; //*
 
 interface Profile {
   id: number;
-  name?: string;
+  name?: string | undefined;
   email?: string;
   birthday?: string;
   tel: string;
   address?: string;
   role?: string;
+  testnum?: string;
 }
-
-const initialState: Profile[] = [];
+// interface Products {
+//   data: Profile[]
+//   test?: string
+// }
+// const initialState: Products = {
+//   data: [],
+// test : ""
+// };
+const initialState: Profile[] = [
+  // {
+  //   id: 0,
+  //   name: "",
+  //   email: "",
+  //   birthday: "",
+  //   tel: "",
+  //   address: "",
+  //   role: "",
+  //   testnum: "",
+  // },
+]; // กำหนด initialState
 const profileSlice = createSlice({
-  name: "profile",
-  initialState: initialState,
+  name: "profile", // *
+  initialState: initialState, //*
   reducers: {
+    //* สร้างฟังก์ชั่นที่จะเราจะอัพเดท state
     registerProfile(state, action) {
       return [
         ...state,
@@ -44,9 +64,26 @@ const profileSlice = createSlice({
       const itemId = action.payload;
       return state.filter((item) => !itemId.includes(item.id));
     },
+    addItem(state, action) {
+      console.log("action.payload", action.payload);
+      const itemId = action.payload;
+      return [
+        ...state,
+        {
+          id: action.payload.id,
+          name: action.payload.name,
+          email: action.payload.email,
+          birthday: action.payload.birthday,
+          tel: action.payload.tel,
+          role: action.payload.role,
+          address: action.payload.address,
+          testnum: action.payload.testnum,
+        },
+      ];
+    },
   },
 });
 
-export const { registerProfile, updateProfile, removeItem } =
+export const { registerProfile, updateProfile, removeItem, addItem } =
   profileSlice.actions;
 export default profileSlice.reducer;

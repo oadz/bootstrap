@@ -54,7 +54,7 @@
       rgba(1, 65, 255, 0),
       rgba(1, 65, 255, 0.3)
     ); */
-/* 
+    /* 
     --tile-start-rgb: 2, 13, 46;
     --tile-end-rgb: 2, 5, 19;
     --tile-border: conic-gradient(
@@ -86,7 +86,7 @@ body {
   max-width: 100vw;
   height: 100vh;
   max-height: 100%;
-  padding: 40px;
+  /* padding: 40px; */
   overflow-x: hidden;
 }
 
@@ -104,31 +104,30 @@ a {
   color: inherit;
   text-decoration: none;
 }
-.goback-button{
+.goback-button {
   margin-right: auto;
   border: none !important;
   background: gainsboro !important;
 }
-.goback-link{
+.goback-link {
   text-decoration: none;
-    color: black;
+  color: black;
 }
-.goback-button:hover{
+.goback-button:hover {
   color: var(--bs-btn-hover-color);
   background-color: var(--bs-gray-600) !important;
   border-color: var(--bs-btn-hover-border-color);
 }
-.regis-button{
+.regis-button {
   margin-left: auto;
   border: none !important;
   background: #83d554 !important;
 }
-.regis-link{
+.regis-link {
   text-decoration: none;
-    color: black;
+  color: black;
 }
-.regis-button:hover{
-
+.regis-button:hover {
   background: #377b10 !important;
 }
 /* @media (prefers-color-scheme: dark) {
@@ -139,7 +138,6 @@ a {
 .swal2-popup {
   font-size: 0.75rem !important;
   /* font-family: Georgia, serif; */
-  
 }
 /* .swal2-title {
   font-family:'Montserrat', sans-serif;
